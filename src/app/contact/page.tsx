@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { useState } from 'react';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 
 export default function ContactPage(){
@@ -16,13 +16,16 @@ export default function ContactPage(){
     throw new Error('Missing Supabase environment variables');
   }
   
+  console.log("The Supabase environment variable values: ", supabaseUrl, supabaseKey);
   const supabase = createClient(supabaseUrl, supabaseKey);
 
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   const { error } = await supabase
-    .from('contacts')
-    .insert([{ email }, {phone}]);
+    .from('contact')
+    .insert([{ email , phone}]);
+
+  if(error) alert (new Error('An error occurred while submitting your contact information'));
   if (!error) alert('Thanks for subscribing!');
   setEmail('');
   setPhone('');
