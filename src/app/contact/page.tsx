@@ -18,7 +18,7 @@ export default function ContactPage(){
   
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-const handleSubmit = async (e: any) => {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   const { error } = await supabase
     .from('contacts')
