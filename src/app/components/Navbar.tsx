@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,7 +27,7 @@ export default function Navbar() {
         <div className="hidden md:flex space-x-6 text-lg">
           <NavItem href="/projects" label="Projects" activePath={pathname} />
           <NavItem href="/about" label="About" activePath={pathname} />
-          <NavItem href="/contact" label="Contact" activePath={pathname} />
+          <NavItem href="#contact" label="Contact" activePath={pathname} />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -52,9 +50,9 @@ export default function Navbar() {
           className="bg-gray-900 text-white w-3/4 max-w-xs h-full flex flex-col te shadow-lg"
           
         >
-          <NavItem href="/projects" label="Projects" activePath={pathname} />
-          <NavItem href="/about" label="About" activePath={pathname} />
-          <NavItem href="/contact" label="Contact" activePath={pathname} />
+          <NavItem href="#projects" label="Projects" activePath={pathname} />
+          <NavItem href="#about" label="About" activePath={pathname} />
+          <NavItem href="#contact" label="Contact" activePath={pathname} />
 
           {/* Close Button */}
           <button

@@ -1,80 +1,520 @@
-import Link from "next/link";
-import Navbar from "./components/Navbar";
-import Head from "next/head";
+"use client";
+// import Link from "next/link";
+// import Navbar from "./components/Navbar";
+// import Head from "next/head";
+// import { FaTelegram } from "react-icons/fa";
+// import { FiMail } from "react-icons/fi";
+// import { skills } from "./services/skill.service";
+// import { data } from "./services/project.service";
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <>
+//       <Head>
+//         <title>Tesfaye - Portfolio</title>
+//         <meta name="description" content="A modern developer portfolio." />
+//       </Head>
+//       <div className="min-h-screen bg-gray-500 my-10">
+//         <Navbar />
+//         {/* Hero Section */}
+//         <section className="py-20 text-center bg-blue-600 text-white">
+//           <h1 className="text-5xl font-bold mb-4">Hi, I&apos;m Tesfaye Tadesse</h1>
+//           <p className="text-xl mb-6">A passionate Software Developer</p>
+//           <p className="text-lg">I specialize in full-stack web development, building modern web applications using the latest technologies.</p>
+//           <Link
+//             href="/projects" 
+//             className="mt-8 inline-block bg-yellow-500 text-black py-2 px-6 rounded-lg hover:bg-yellow-600 transition">
+//             View My Work
+//           </Link>
+//         </section>
+        
+//         {/* About Section */}
+//         <section className="py-20 text-center bg-gray-200" id="about">
+//           <h2 className="text-3xl font-semibold text-black mb-6">About Me</h2>
+//           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+//             A dedicated Software Developer trained in designing, developing, and testing software solutions.
+//             Skilled in backend web development, API development & integration,
+//             and database design and development. Passionate about learning and
+//             implementing new technologies to build efficient and scalable
+//             applications.
+//           </p>
+//         </section>
+        
+//         {/* Skills Section */}
+//         <section className="py-20 text-center bg-white" id="skills">
+//           <h2 className="text-3xl font-semibold text-black mb-6">Skills</h2>
+//           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+//             {skills.map(skill => (
+//               <div className="skill-item" key={skill}>
+//                 <h3 className="font-semibold text-xl text-gray-700">{skill}</h3>
+//             </div>
+//             ))}
+//           </div>
+//         </section>
+
+//         {/* Featured Project */}
+//         <section className="py-20 text-center bg-gray-200" id="projects">
+//           <h2 className="text-3xl font-semibold text-black mb-6">Featured Projects</h2>
+//           <div>
+//             {data.map(project => (
+//               project.featured && (
+//                 <div className="max-w-3xl mx-auto" key={project.id}>
+//                   <h3 className="text-xl font-semibold text-gray-700 mb-4">{project.title}</h3>
+//                   <p className="text-lg text-gray-600 mb-6">
+//                     {project.description}
+//                   </p>
+//                   <Link 
+//                     href={project.githubUrl?? ""} 
+//                     className="text-blue-500 hover:underline">View Project on GitHub
+//                   </Link>
+//               </div>
+//               )
+//             ))}
+//           </div>
+//         </section>
+
+//         {/* Contact Section */}
+//         <section className="py-20 text-center bg-blue-600 text-white" id="contact">
+//           <h2 className="text-3xl font-semibold mb-6">Let&apos;s Connect</h2>
+//           <p className="text-lg mb-6">Feel free to reach out to me if you want to work together or just have a chat!</p>
+//           <div className="flex gap-4">
+//             <a 
+//               href="https://t.me/ttadesse627" 
+//               target="_blank" 
+//               rel="noopener noreferrer"
+//               className="text-blue-500 hover:text-blue-700"
+//             >
+//               <FaTelegram size={24} />
+//             </a>
+//             <a 
+//               href="mailto:ttadesse627@gmail.com" 
+//               target="_blank" 
+//               rel="noopener noreferrer"
+//               className="text-gray-700 hover:text-gray-900"
+//             >
+//               <FiMail size={24} />
+//             </a>
+//           </div>
+//         </section>
+//       </div>
+//     </>
+//   );
+// }
+
+import { useState } from "react";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
+import { BsBrightnessHigh, BsMoon } from "react-icons/bs";
+import { FiMail } from "react-icons/fi";
+import { SiDotnet, SiReact, SiAngular, SiMysql, SiGit } from "react-icons/si";
+import { motion } from "framer-motion";
+import { data } from "./data";
+import {formatDate} from "./services";
+
+
+const Home = () => {
+  const [activeSection, setActiveSection] = useState("home");
+  const [isBlack, setIsBlack] = useState(false);
+
+  const skills = [
+    { name: "ASP.NET Core", icon: <SiDotnet className="text-purple-600 text-4xl" /> },
+    { name: "React", icon: <SiReact className="text-blue-500 text-4xl" /> },
+    { name: "Angular", icon: <SiAngular className="text-red-600 text-4xl" /> },
+    { name: "SQL/MySQL", icon: <SiMysql className="text-blue-400 text-4xl" /> },
+    { name: "Git", icon: <SiGit className="text-orange-600 text-4xl" /> },
+  ];
+
+  const projects = data;
+  const lightTheme = "bg-white/90 text-black shadow-md";
+  const darkTheme = "bg-stone-800 text-white shadow-md";
+  // let inputStyle = "bg-gray-400 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70";
+
+  const [theme, setTheme] = useState(lightTheme);
+  const inputStyle = theme==darkTheme?"bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70": 
+                  "bg-gray-100 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70";
+
+
+  const changeTheme = () =>{
+
+    if (!isBlack) {
+      setTheme(darkTheme);
+      setIsBlack(!isBlack);
+      console.log("theme: "+theme);
+    }
+    else 
+    {
+      setTheme(lightTheme);
+      setIsBlack(!isBlack);
+    }
+  };
+
+  const date: string = new Date("02/28/2023").toDateString();
+  console.log("My date: "+date);
+
   return (
     <>
       <Head>
-        <title>Tesfaye - Portfolio</title>
-        <meta name="description" content="A modern developer portfolio." />
+        <title>Tesfaye Tadesse | Full-Stack Developer</title>
+        <meta name="description" content="Professional portfolio of Tesfaye Tadesse, Full-Stack Developer" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-screen bg-gray-500 my-10">
-        <Navbar />
-        {/* Hero Section */}
-        <section className="py-20 text-center bg-blue-600 text-white">
-          <h1 className="text-5xl font-bold mb-4">Hi, I&apos;m Tesfaye Tadesse</h1>
-          <p className="text-xl mb-6">A passionate Software Developer</p>
-          <p className="text-lg">I specialize in full-stack web development, building modern web applications using the latest technologies.</p>
-          <Link
-            href="#projects" 
-            className="mt-8 inline-block bg-yellow-500 text-black py-2 px-6 rounded-lg hover:bg-yellow-600 transition">
-            View My Work
+
+      {/* Navigation */}
+      <nav className={`fixed w-full backdrop-blur-sm z-50${theme}`}>
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link href="#home" className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+              <Image
+                src="/profile.jpg"
+                alt="Tesfaye"
+                width={50}
+                height={50}
+                className="rounded-full border-2 border-yellow-400"
+              />
+            </div>
+            <span className="text-xl font-semibold">Tesfaye Tadesse</span>
           </Link>
+          <div className="hidden md:flex space-x-8">
+            {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
+              <Link
+                key={item}
+                href={`#${item}`}
+                className={`capitalize transition-colors ${activeSection === item ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-blue-500'}`}
+                onClick={() => setActiveSection(item)}
+              >
+                {item}
+              </Link>
+            ))}
+          </div>
+          <button onClick={changeTheme}>
+            <span>
+              {isBlack?(<BsBrightnessHigh />) : (<BsMoon />)}
+            </span>
+          </button>
+          <button className="md:hidden text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <div>
+
+          </div>
+        </div>
+      </nav>
+
+      <main className={`pt-20 ${theme}`}>
+        {/* Hero Section */}
+        <section id="home" className="min-h-screen flex items-center justify-center shadow-md">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-4xl text-center"
+          >
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              Hi, I&apos;m <span className="text-blue-600">Tesfaye Tadesse</span>
+            </h1>
+            <h2 className="text-2xl md:text-3xl mb-8">
+              Full-Stack Developer | ASP.NET Core Specialist
+            </h2>
+            <p className="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+              I build modern, scalable web applications with clean code and intuitive user experiences.
+            </p>
+            <div className="flex justify-center space-x-4">
+              <Link
+                href="#projects"
+                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg"
+              >
+                View My Work
+              </Link>
+              <Link
+                href="#contact"
+                className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              >
+                Contact Me
+              </Link>
+            </div>
+          </motion.div>
         </section>
-        
+
         {/* About Section */}
-        <section className="py-20 text-center bg-gray-200" id="about">
-          <h2 className="text-3xl font-semibold text-black mb-6">About Me</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            I am a software developer with a passion for creating interactive web applications. With expertise in both front-end and back-end technologies, I thrive in developing solutions that deliver a seamless user experience. I enjoy learning new technologies and improving my skills.
-          </p>
+        <section id="about" className={`py-20 px-6 ${theme}`}>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16">
+              About <span className="text-blue-600">Me</span>
+            </h2>
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="md:w-1/3 flex justify-center">
+                <div className="w-64 h-64 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 overflow-hidden shadow-xl">
+                  {/* Placeholder for profile image */}
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                    <img
+                      src="/profile.jpg"
+                      alt="Tesfaye"
+                      // width={50}
+                      // height={50}
+                      className="rounded-full border-2 border-yellow-400"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="md:w-2/3">
+                <p className="text-lg text-gray-600 mb-6">
+                  I&apos;m a dedicated Software Developer with expertise in designing, developing, and testing robust software solutions.
+                </p>
+                <p className="text-lg text-gray-600 mb-6">
+                  My specialization lies in backend web development, API development & integration, and database design. I&apos;m passionate about implementing modern technologies to build efficient and scalable applications.
+                </p>
+                <p className="text-lg text-gray-600">
+                  When I&apos;m not coding, you can find me exploring new technologies, contributing to open-source projects, or mentoring aspiring developers.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
-        
-        {/* Skills Section */}
-        <section className="py-20 text-center bg-white" id="skills">
-          <h2 className="text-3xl font-semibold text-black mb-6">Skills</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <div className="skill-item">
-              <h3 className="font-semibold text-xl text-gray-700">React</h3>
-            </div>
-            <div className="skill-item">
-              <h3 className="font-semibold text-xl text-gray-700">Node.js</h3>
-            </div>
-            <div className="skill-item">
-              <h3 className="font-semibold text-xl text-gray-700">MongoDB</h3>
-            </div>
-            <div className="skill-item">
-              <h3 className="font-semibold text-xl text-gray-700">Express.js</h3>
+  
+        {/* Experience Section */}
+        <section id="experience" className="py-20 bg-gray-50 px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+              Professional <span className="text-blue-600">Experience</span>
+            </h2>
+            
+            <div className="space-y-12">
+              {/* Current Job */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-xl shadow-md"
+              >
+                <div className="flex items-start">
+                  <div className="mr-6">
+                    <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span className="text-blue-600 text-2xl font-bold">AD</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                      <h3 className="text-xl font-bold text-gray-800">Junior Software Developer</h3>
+                      <span className="text-blue-600 font-medium">{formatDate(2023,2)} – Present</span>
+                    </div>
+                    <p className="text-gray-600 font-medium mb-4">Appdiv Systems</p>
+                    <ul className="space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-blue-500 mr-2 mt-1">•</span>
+                        <span>Designed and implemented <strong className="text-gray-800">database schemas and APIs</strong> using <strong className="text-gray-800">ASP.NET Core</strong>, ensuring scalability and performance</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-500 mr-2 mt-1">•</span>
+                        <span>Developed and tested <strong className="text-gray-800">multiple projects</strong>, delivering high-quality solutions that met client requirements</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-500 mr-2 mt-1">•</span>
+                        <span>Identified and reported bugs, contributing to improved system reliability and user experience</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
 
-        {/* Featured Project */}
-        <section className="py-20 text-center bg-gray-200" id="projects">
-          <h2 className="text-3xl font-semibold text-black mb-6">Featured Project</h2>
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4">Project Name</h3>
-            <p className="text-lg text-gray-600 mb-6">
-              This project is a web application I built using React and Node.js. It is designed to [brief description of the project]. 
-            </p>
-            <Link 
-              href="https://github.com/your-username/project-link" 
-              className="text-blue-500 hover:underline">View Project on GitHub</Link>
+        {/* Certifications Section */}
+        <section id="certifications" className="py-20 bg-white px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+              Professional <span className="text-blue-600">Certifications</span>
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Scrum Certification */}
+              <motion.div 
+                whileHover={{ y: -5 }}
+                className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                    <span className="text-blue-600 text-xl">🏆</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800">Scrum Fundamental Certified</h3>
+                </div>
+                <p className="text-gray-600 mb-4">Agile Development Methodology (SCRUMstudy)</p>
+                <a
+                  href="https://www.scrumstudy.com/certification/verify?type=SFC&number=965929"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  View Credential
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+
+              {/* Data Analysis Certification */}
+              <motion.div 
+                whileHover={{ y: -5 }}
+                className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100"
+              >
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                    <span className="text-purple-600 text-xl">📊</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800">Data Analysis Fundamentals</h3>
+                </div>
+                <p className="text-gray-600 mb-4">Udacity Nanodegree Program</p>
+                <a
+                  href="https://www.udacity.com/certificate/e/49a2aa7a-4bf8-11ef-9ee7-af594eae9c42"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  View Credential
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills Section */}
+        <section id="skills" className={`py-20 px-6 ${theme}`}>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+              My <span className="text-blue-600">Skills</span>
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  // whileHover={{ y: -5 }}
+                  className="p-6 rounded-xl shadow-md flex flex-col items-center text-center"
+                >
+                  {skill.icon}
+                  <h3 className="mt-4 font-medium">{skill.name}</h3>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects" className={`py-20 px-6 ${theme}`}>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+              Featured <span className="text-blue-600">Projects</span>
+            </h2>
+            {projects.map((project) => (
+              <div key={project.id} className="mb-16">
+                <div className="rounded-xl overflow-hidden shadow-lg">
+                  <div className="h-64 flex items-center justify-center">
+                    <span>Project Preview</span>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
+                    <p className="mb-6">{project.description}</p>
+                    <div className="mb-6">
+                      <h4 className="font-semibold mb-2">Technologies Used:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech, i) => (
+                          <span key={i} className="text-blue-800 px-3 py-1 rounded-full text-sm">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <Link
+                      href={project.githubUrl?? ""}
+                      className="inline-flex items-center px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      <FaGithub className="mr-2" />
+                      View on GitHub
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Contact Section */}
-        <section className="py-20 text-center bg-blue-600 text-white" id="contact">
-          <h2 className="text-3xl font-semibold mb-6">Let&apos;s Connect</h2>
-          <p className="text-lg mb-6">Feel free to reach out to me if you want to work together or just have a chat!</p>
-          <Link 
-            href="/contact" 
-            className="inline-block bg-yellow-500 text-black py-2 px-6 rounded-lg hover:bg-yellow-600 transition">
-            Contact Me
-          </Link>
+        <section id="contact" className={`py-20 bg-gradient-to-br px-6 ${theme}`}>
+          <div className={`max-w-4xl mx-auto text-center`}>
+            <h2 className="text-3xl font-bold mb-4">Let&apos;s Connect</h2>
+            <p className="text-xl mb-12 max-w-2xl mx-auto">
+              Have a project in mind or want to discuss potential opportunities? I&apos;d love to hear from you!
+            </p>
+            <div className="flex justify-center space-x-6 mb-12">
+              <a
+                href="https://t.me/ttadesse627"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+              >
+                <FaTelegram className="text-xl" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/ttadesse627"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+              >
+                <FaLinkedin className="text-xl" />
+              </a>
+              <a
+                href="mailto:ttadesse627@gmail.com"
+                className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+              >
+                <FiMail className="text-xl" />
+              </a>
+            </div>
+            <form className="max-w-md mx-auto">
+              <div className="grid grid-cols-1 gap-6">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
+                />
+                <input
+                  type="email"
+                  placeholder="Your Email"
+                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
+                />
+                <textarea
+                  placeholder="Your Message"
+                  rows={4}
+                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
+                ></textarea>
+                <button
+                  type="submit"
+                  className="px-6 py-3 text-blue-600 rounded-lg font-medium hover:bg-blue-300 transition-colors"
+                >
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
         </section>
-      </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-8 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <p>© {new Date().getFullYear()} Tesfaye Tadesse. All rights reserved.</p>
+          <p className="mt-2 text-gray-400 text-sm">
+            Built with Next.js, Tailwind CSS, and ❤️
+          </p>
+        </div>
+      </footer>
     </>
   );
-}
+};
+
+export default Home;
+
+
