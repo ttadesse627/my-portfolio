@@ -1,105 +1,4 @@
 "use client";
-// import Link from "next/link";
-// import Navbar from "./components/Navbar";
-// import Head from "next/head";
-// import { FaTelegram } from "react-icons/fa";
-// import { FiMail } from "react-icons/fi";
-// import { skills } from "./services/skill.service";
-// import { data } from "./services/project.service";
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Head>
-//         <title>Tesfaye - Portfolio</title>
-//         <meta name="description" content="A modern developer portfolio." />
-//       </Head>
-//       <div className="min-h-screen bg-gray-500 my-10">
-//         <Navbar />
-//         {/* Hero Section */}
-//         <section className="py-20 text-center bg-blue-600 text-white">
-//           <h1 className="text-5xl font-bold mb-4">Hi, I&apos;m Tesfaye Tadesse</h1>
-//           <p className="text-xl mb-6">A passionate Software Developer</p>
-//           <p className="text-lg">I specialize in full-stack web development, building modern web applications using the latest technologies.</p>
-//           <Link
-//             href="/projects" 
-//             className="mt-8 inline-block bg-yellow-500 text-black py-2 px-6 rounded-lg hover:bg-yellow-600 transition">
-//             View My Work
-//           </Link>
-//         </section>
-        
-//         {/* About Section */}
-//         <section className="py-20 text-center bg-gray-200" id="about">
-//           <h2 className="text-3xl font-semibold text-black mb-6">About Me</h2>
-//           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-//             A dedicated Software Developer trained in designing, developing, and testing software solutions.
-//             Skilled in backend web development, API development & integration,
-//             and database design and development. Passionate about learning and
-//             implementing new technologies to build efficient and scalable
-//             applications.
-//           </p>
-//         </section>
-        
-//         {/* Skills Section */}
-//         <section className="py-20 text-center bg-white" id="skills">
-//           <h2 className="text-3xl font-semibold text-black mb-6">Skills</h2>
-//           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-//             {skills.map(skill => (
-//               <div className="skill-item" key={skill}>
-//                 <h3 className="font-semibold text-xl text-gray-700">{skill}</h3>
-//             </div>
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* Featured Project */}
-//         <section className="py-20 text-center bg-gray-200" id="projects">
-//           <h2 className="text-3xl font-semibold text-black mb-6">Featured Projects</h2>
-//           <div>
-//             {data.map(project => (
-//               project.featured && (
-//                 <div className="max-w-3xl mx-auto" key={project.id}>
-//                   <h3 className="text-xl font-semibold text-gray-700 mb-4">{project.title}</h3>
-//                   <p className="text-lg text-gray-600 mb-6">
-//                     {project.description}
-//                   </p>
-//                   <Link 
-//                     href={project.githubUrl?? ""} 
-//                     className="text-blue-500 hover:underline">View Project on GitHub
-//                   </Link>
-//               </div>
-//               )
-//             ))}
-//           </div>
-//         </section>
-
-//         {/* Contact Section */}
-//         <section className="py-20 text-center bg-blue-600 text-white" id="contact">
-//           <h2 className="text-3xl font-semibold mb-6">Let&apos;s Connect</h2>
-//           <p className="text-lg mb-6">Feel free to reach out to me if you want to work together or just have a chat!</p>
-//           <div className="flex gap-4">
-//             <a 
-//               href="https://t.me/ttadesse627" 
-//               target="_blank" 
-//               rel="noopener noreferrer"
-//               className="text-blue-500 hover:text-blue-700"
-//             >
-//               <FaTelegram size={24} />
-//             </a>
-//             <a 
-//               href="mailto:ttadesse627@gmail.com" 
-//               target="_blank" 
-//               rel="noopener noreferrer"
-//               className="text-gray-700 hover:text-gray-900"
-//             >
-//               <FiMail size={24} />
-//             </a>
-//           </div>
-//         </section>
-//       </div>
-//     </>
-//   );
-// }
 
 import { useState } from "react";
 import Head from "next/head";
@@ -117,6 +16,7 @@ import {formatDate} from "./services";
 const Home = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isBlack, setIsBlack] = useState(false);
+  const [navLinkDisplay, setNavLinkDisplay] = useState("hidden");
 
   const skills = [
     { name: "ASP.NET Core", icon: <SiDotnet className="text-purple-600 text-4xl" /> },
@@ -129,11 +29,12 @@ const Home = () => {
   const projects = data;
   const lightTheme = "bg-white/90 text-black shadow-md";
   const darkTheme = "bg-stone-800 text-white shadow-md";
-  // let inputStyle = "bg-gray-400 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70";
 
   const [theme, setTheme] = useState(lightTheme);
   const inputStyle = theme==darkTheme?"bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70": 
-                  "bg-gray-100 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70";
+                  "bg-gray-50 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-400";
+  const mobileViewClass = "flex flex-col justify-between items-center";
+  const mobileHideClass = "hidden";
 
 
   const changeTheme = () =>{
@@ -150,8 +51,12 @@ const Home = () => {
     }
   };
 
-  const date: string = new Date("02/28/2023").toDateString();
-  console.log("My date: "+date);
+  const displayMobileNav = () =>{
+    if (navLinkDisplay === mobileHideClass) {
+      setNavLinkDisplay(mobileViewClass);
+    }
+    else setNavLinkDisplay(mobileHideClass);
+  };
 
   return (
     <>
@@ -162,8 +67,8 @@ const Home = () => {
       </Head>
 
       {/* Navigation */}
-      <nav className={`fixed w-full backdrop-blur-sm z-50${theme}`}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <nav className={`fixed w-full backdrop-blur-sm z-50 ${theme}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <Link href="#home" className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
               <Image
@@ -174,9 +79,10 @@ const Home = () => {
                 className="rounded-full border-2 border-yellow-400"
               />
             </div>
-            <span className="text-xl font-semibold">Tesfaye Tadesse</span>
+            <span className="text-lg sm:text-xl font-semibold">Tesfaye Tadesse</span>
           </Link>
-          <div className="hidden md:flex space-x-8">
+          {/* Desktop Nav */}
+          <div className={`hidden md:flex space-x-6 lg:space-x-8`}>
             {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
               <Link
                 key={item}
@@ -188,41 +94,58 @@ const Home = () => {
               </Link>
             ))}
           </div>
-          <button onClick={changeTheme}>
+          {/* Theme Button */}
+          <button onClick={changeTheme} className="ml-2">
             <span>
-              {isBlack?(<BsBrightnessHigh />) : (<BsMoon />)}
+              {isBlack ? (<BsBrightnessHigh />) : (<BsMoon />)}
             </span>
           </button>
-          <button className="md:hidden text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          {/* Hamburger */}
+          <button className="md:hidden ml-2 text-gray-700" onClick={displayMobileNav}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <div>
-
+        </div>
+        {/* Mobile Nav Overlay */}
+        <div className={`${navLinkDisplay} md:hidden absolute top-0 left-0 w-full h-screen bg-black/70 flex-col items-center justify-center z-40 transition-all`}>
+          <div className="flex flex-col space-y-8 bg-white dark:bg-stone-800 w-4/5 mx-auto mt-24 p-8 rounded-xl shadow-lg">
+            {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
+              <Link
+                key={item}
+                href={`#${item}`}
+                className={`capitalize text-lg transition-colors ${activeSection === item ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-blue-500'}`}
+                onClick={() => {
+                  setActiveSection(item);
+                  setNavLinkDisplay(mobileHideClass);
+                }}
+              >
+                {item}
+              </Link>
+            ))}
           </div>
         </div>
       </nav>
 
       <main className={`pt-20 ${theme}`}>
         {/* Hero Section */}
-        <section id="home" className="min-h-screen flex items-center justify-center shadow-md">
+        <section id="home" className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 shadow-md">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="max-w-4xl text-center"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6">
               Hi, I&apos;m <span className="text-blue-600">Tesfaye Tadesse</span>
             </h1>
-            <h2 className="text-2xl md:text-3xl mb-8">
-              Full-Stack Developer | ASP.NET Core Specialist
+            <h2 className="text-xl sm:text-2xl md:text-3xl mb-8">
+              Software Developer
             </h2>
-            <p className="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
               I build modern, scalable web applications with clean code and intuitive user experiences.
             </p>
-            <div className="flex justify-center space-x-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="#projects"
                 className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg"
@@ -250,12 +173,12 @@ const Home = () => {
                 <div className="w-64 h-64 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 overflow-hidden shadow-xl">
                   {/* Placeholder for profile image */}
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                    <img
+                    <Image
                       src="/profile.jpg"
                       alt="Tesfaye"
-                      // width={50}
-                      // height={50}
-                      className="rounded-full border-2 border-yellow-400"
+                      width={300}
+                      height={300}
+                      className="rounded-full border-2 border-yellow-400 bg-gray-900"
                     />
                   </div>
                 </div>
@@ -276,7 +199,7 @@ const Home = () => {
         </section>
   
         {/* Experience Section */}
-        <section id="experience" className="py-20 bg-gray-50 px-6">
+        <section id="experience" className={`py-20 bg-gray-50 px-6 ${theme}`}>
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
               Professional <span className="text-blue-600">Experience</span>
@@ -286,7 +209,7 @@ const Home = () => {
               {/* Current Job */}
               <motion.div 
                 whileHover={{ scale: 1.02 }}
-                className="bg-white p-8 rounded-xl shadow-md"
+                className="p-8 rounded-xl shadow-md"
               >
                 <div className="flex items-start">
                   <div className="mr-6">
@@ -296,7 +219,7 @@ const Home = () => {
                   </div>
                   <div>
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                      <h3 className="text-xl font-bold text-gray-800">Junior Software Developer</h3>
+                      <h3 className="text-xl font-bold text-gray-800">Software Developer</h3>
                       <span className="text-blue-600 font-medium">{formatDate(2023,2)} – Present</span>
                     </div>
                     <p className="text-gray-600 font-medium mb-4">Appdiv Systems</p>
@@ -322,9 +245,9 @@ const Home = () => {
         </section>
 
         {/* Certifications Section */}
-        <section id="certifications" className="py-20 bg-white px-6">
+        <section id="certifications" className={`py-20 ${theme} px-6`}>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+            <h2 className="text-3xl font-bold text-center mb-16">
               Professional <span className="text-blue-600">Certifications</span>
             </h2>
             
@@ -332,13 +255,13 @@ const Home = () => {
               {/* Scrum Certification */}
               <motion.div 
                 whileHover={{ y: -5 }}
-                className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100"
+                className="p-6 rounded-xl border border-gray-400"
               >
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                     <span className="text-blue-600 text-xl">🏆</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-800">Scrum Fundamental Certified</h3>
+                  <h3 className="text-lg font-bold">Scrum Fundamental Certified</h3>
                 </div>
                 <p className="text-gray-600 mb-4">Agile Development Methodology (SCRUMstudy)</p>
                 <a
@@ -355,9 +278,9 @@ const Home = () => {
               </motion.div>
 
               {/* Data Analysis Certification */}
-              <motion.div 
+              <motion.div
                 whileHover={{ y: -5 }}
-                className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-100"
+                className="p-6 rounded-xl border border-gray-400"
               >
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
@@ -478,7 +401,7 @@ const Home = () => {
                 <input
                   type="text"
                   placeholder="Your Name"
-                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
+                  className={`px-4 py-3 rounded-lg ${inputStyle} placeholder-foreground`}
                 />
                 <input
                   type="email"
