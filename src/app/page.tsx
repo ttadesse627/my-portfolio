@@ -12,7 +12,6 @@ import { motion } from "framer-motion";
 import { data } from "./data";
 import {formatDate} from "./services";
 
-
 const Home = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [isBlack, setIsBlack] = useState(false);
@@ -29,24 +28,28 @@ const Home = () => {
   const projects = data;
   const lightTheme = "bg-white/90 text-black shadow-md";
   const darkTheme = "bg-stone-800 text-white shadow-md";
+  const lightText = "text-gray-300";
+  const darkText = "text-gray-800";
 
   const [theme, setTheme] = useState(lightTheme);
+  const [textColor, setTextColor] = useState(darkText);
   const inputStyle = theme==darkTheme?"bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-white/70": 
                   "bg-gray-50 border border-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 placeholder-gray-400";
   const mobileViewClass = "flex flex-col justify-between items-center";
   const mobileHideClass = "hidden";
 
-
   const changeTheme = () =>{
 
     if (!isBlack) {
       setTheme(darkTheme);
+      setTextColor(lightText);
       setIsBlack(!isBlack);
       console.log("theme: "+theme);
     }
     else 
     {
       setTheme(lightTheme);
+      setTextColor(darkText);
       setIsBlack(!isBlack);
     }
   };
@@ -109,7 +112,7 @@ const Home = () => {
         </div>
         {/* Mobile Nav Overlay */}
         <div className={`${navLinkDisplay} md:hidden absolute top-0 left-0 w-full h-screen bg-black/70 flex-col items-center justify-center z-40 transition-all`}>
-          <div className="flex flex-col space-y-8 bg-white dark:bg-stone-800 w-4/5 mx-auto mt-24 p-8 rounded-xl shadow-lg">
+          <div className={`flex flex-col space-y-8 ${theme} w-4/5 mx-auto mt-24 p-8 rounded-xl shadow-lg`}>
             {['home', 'about', 'skills', 'projects', 'contact'].map((item) => (
               <Link
                 key={item}
@@ -142,7 +145,7 @@ const Home = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl mb-8">
               Software Developer
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+            <p className={`text-base sm:text-lg ${textColor} mb-10 max-w-2xl mx-auto`}>
               I build modern, scalable web applications with clean code and intuitive user experiences.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -183,14 +186,14 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              <div className="md:w-2/3">
-                <p className="text-lg text-gray-600 mb-6">
+              <div className={`md:w-2/3 ${textColor} text-lg`}>
+                <p className="mb-6">
                   I&apos;m a dedicated Software Developer with expertise in designing, developing, and testing robust software solutions.
                 </p>
-                <p className="text-lg text-gray-600 mb-6">
+                <p className="mb-6">
                   My specialization lies in backend web development, API development & integration, and database design. I&apos;m passionate about implementing modern technologies to build efficient and scalable applications.
                 </p>
-                <p className="text-lg text-gray-600">
+                <p className="">
                   When I&apos;m not coding, you can find me exploring new technologies, contributing to open-source projects, or mentoring aspiring developers.
                 </p>
               </div>
@@ -201,7 +204,7 @@ const Home = () => {
         {/* Experience Section */}
         <section id="experience" className={`py-20 bg-gray-50 px-6 ${theme}`}>
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">
+            <h2 className={`text-3xl font-bold text-center mb-16 ${theme===lightTheme?"text-gray-700":"text-gray-400"}`}>
               Professional <span className="text-blue-600">Experience</span>
             </h2>
             
@@ -411,13 +414,11 @@ const Home = () => {
                 <textarea
                   placeholder="Your Message"
                   rows={4}
-                  className={`px-4 py-3 rounded-lg ${inputStyle}`}
-                ></textarea>
+                  className={`px-4 py-3 rounded-lg ${inputStyle}`}>
+                </textarea>
                 <button
                   type="submit"
-                  className="px-6 py-3 text-blue-600 rounded-lg font-medium hover:bg-blue-300 transition-colors"
-                >
-                  Send Message
+                  className="px-6 py-3 text-blue-600 rounded-lg font-medium hover:bg-blue-300 transition-colors">Send Message
                 </button>
               </div>
             </form>
